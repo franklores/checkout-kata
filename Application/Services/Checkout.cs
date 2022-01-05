@@ -17,7 +17,30 @@ public class Checkout : ICheckout
 
     public double GetTotalPrice()
     {
-        return _bag.Sum(x => x.UnitPrice);
+        if (!_bag.Any())
+            return 0;
+
+        var total = _bag.Sum(x => x.UnitPrice).Round();
+
+        foreach (var product in _bag.Distinct())
+        {
+            if (!QualifiesForDiscount(product))
+                continue;
+
+            total -= product.Offer!.CalculateDiscount(_bag.Count(x => x.Sku == product.Sku));
+        }
+
+        return total;
+    }
+
+    private bool QualifiesForDiscount(Item product)
+    {
+        if (product.Offer is null)
+            return false;
+
+        var productCount = _bag.Count(x => x.Sku == product.Sku);
+
+        return productCount >= product.Offer.Quantity;
     }
 
     public void ScanItem(string sku)

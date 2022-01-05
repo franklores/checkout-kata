@@ -23,6 +23,20 @@ public class CheckoutTests
     }
 
     [Test]
+    public void ScanInvalidItem_TotalShouldBeZero()
+    {
+        //arrange
+        var sut = GetCheckout();
+
+        //act
+        sut.ScanItem("InvalidSku");
+        var total = sut.GetTotalPrice();
+
+        //assert
+        Assert.AreEqual(0, total);
+    }
+
+    [Test]
     public void ScanNoItems_Total_ShouldBeZero()
     {
         //arrange
@@ -35,12 +49,10 @@ public class CheckoutTests
         Assert.AreEqual(0, total);
     }
 
-    private Checkout GetCheckout() => new Checkout(_products);
-
     [TestCase("A99", 0.50)]
     [TestCase("B15", 0.30)]
     [TestCase("C40", 0.60)]
-    public void ScanOneItem_TotalShouldBe_ItemPrice(string sku, decimal expectedTotal)
+    public void ScanOneItem_TotalShouldBe_ItemPrice(string sku, double expectedTotal)
     {
         //arrange
         var sut = GetCheckout();
@@ -54,17 +66,35 @@ public class CheckoutTests
         Assert.AreEqual(total, expectedTotal);
     }
 
-    [Test]
-    public void ScanInvalidItem_TotalShouldBeZero()
+    [TestCase("A99,B15,C40", 1.40)]
+    public void ScanMultipleItems_ShouldCalculate_CorrectTotalPrice(string skus, double expectedTotal)
     {
         //arrange
         var sut = GetCheckout();
 
         //act
-        sut.ScanItem("InvalidSku");
+        sut.ScanMultipleItems(skus);
+
         var total = sut.GetTotalPrice();
 
         //assert
-        Assert.AreEqual(0, total);
+        Assert.AreEqual(expectedTotal, total);
     }
+
+    [TestCase("B15,A99,B15,C40", 1.55)]
+    public void ScanMultipleItems_ProductQualifiesForOffer_ShouldApplyCorrectOffer(string skus, double expectedTotal)
+    {
+        //arrange
+        var sut = GetCheckout();
+
+        //act
+        sut.ScanMultipleItems(skus);
+
+        var total = sut.GetTotalPrice();
+
+        //assert
+        Assert.AreEqual(expectedTotal, total);
+    }
+
+    private Checkout GetCheckout() => new Checkout(_products);
 }
