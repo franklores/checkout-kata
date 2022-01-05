@@ -1,12 +1,8 @@
 ﻿namespace Application.Interfaces;
 
-using Domain;
-
-using System.Threading.Tasks;
-
 public interface ICheckout
 {
-    Task ScanItem(Item item);
+    void ScanItem(string sku);
 
-    Task<decimal> GetTotalPrice();
+    decimal GetTotalPrice();
 }

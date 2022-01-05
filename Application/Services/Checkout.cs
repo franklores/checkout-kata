@@ -5,16 +5,17 @@ using Application.Interfaces;
 using Domain;
 
 using System;
-using System.Threading.Tasks;
 
 public class Checkout : ICheckout
 {
-    public Task<decimal> GetTotalPrice()
+    private readonly IEnumerable<Item> _bag = new List<Item>();
+
+    public decimal GetTotalPrice()
     {
         throw new NotImplementedException();
     }
 
-    public Task ScanItem(Item item)
+    public void ScanItem(string sku)
     {
         throw new NotImplementedException();
     }
