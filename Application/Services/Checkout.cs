@@ -44,7 +44,7 @@ public class Checkout : ICheckout
 
         var productCount = _bag.Count(x => x.Sku == product.Sku);
 
-        return productCount % product.Offer.Quantity == 0;
+        return productCount >= product.Offer.Quantity;
     }
 
     public void ScanItem(string sku)
