@@ -1,4 +1,3 @@
-﻿namespace Domain
-{
-    public record Item(string Sku, decimal UnitPrice);
-}
+﻿namespace Domain;
+
+public record Item(string Sku, decimal UnitPrice);
