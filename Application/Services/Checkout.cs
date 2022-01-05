@@ -29,7 +29,7 @@ public class Checkout : ICheckout
             if (!QualifiesForDiscount(product))
                 continue;
 
-            total -= product.Offer!.CalculateDiscount(_bag.Count(x => x.Sku == product.Sku));
+            total -= product.Offer!.CalculateDiscount(_bag.Count(x => x.Sku == product.Sku), product.UnitPrice);
         }
 
         _runningTotal = total;

@@ -82,6 +82,8 @@ public class CheckoutTests
     }
 
     [TestCase("B15,A99,B15,C40", 1.55)]
+    [TestCase("A99,A99,A99", 1.30)]
+    [TestCase("B15,B15", 0.45)]
     public void ScanMultipleItems_ProductQualifiesForOffer_ShouldApplyCorrectOffer(string skus, double expectedTotal)
     {
         //arrange
