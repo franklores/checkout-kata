@@ -18,7 +18,7 @@ public class CheckoutTests
         {
             new Item("A99", 0.50, new SpecialOffer("A99",3,1.30)),
             new Item("B15", 0.30, new SpecialOffer("B15", 2, 0.45)),
-            new Item("C40", 0.60, null)
+            new Item("C40", 0.60)
         };
     }
 

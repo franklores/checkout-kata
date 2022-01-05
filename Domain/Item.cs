@@ -1,3 +1,3 @@
 ﻿namespace Domain;
 
-public record Item(string Sku, double UnitPrice, IOffer? Offer);
+public record Item(string Sku, double UnitPrice, IOffer? Offer = null);
