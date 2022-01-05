@@ -8,6 +8,8 @@ public class Checkout : ICheckout
 {
     private readonly List<Item> _bag = new List<Item>();
 
+    private double _runningTotal = 0;
+
     private readonly IEnumerable<Item> _products;
 
     public Checkout(IEnumerable<Item> products)
@@ -15,10 +17,10 @@ public class Checkout : ICheckout
         _products = products;
     }
 
-    public double GetTotalPrice()
+    private void UpdateTotal()
     {
         if (!_bag.Any())
-            return 0;
+            return;
 
         var total = _bag.Sum(x => x.UnitPrice).Round();
 
@@ -30,8 +32,10 @@ public class Checkout : ICheckout
             total -= product.Offer!.CalculateDiscount(_bag.Count(x => x.Sku == product.Sku));
         }
 
-        return total;
+        _runningTotal = total;
     }
+
+    public double GetTotalPrice() => _runningTotal.Round();
 
     private bool QualifiesForDiscount(Item product)
     {
@@ -40,7 +44,7 @@ public class Checkout : ICheckout
 
         var productCount = _bag.Count(x => x.Sku == product.Sku);
 
-        return productCount >= product.Offer.Quantity;
+        return productCount % product.Offer.Quantity == 0;
     }
 
     public void ScanItem(string sku)
@@ -50,6 +54,7 @@ public class Checkout : ICheckout
         if (item != null)
         {
             _bag.Add(item);
+            UpdateTotal();
         }
     }
 }
