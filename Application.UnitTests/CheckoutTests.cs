@@ -53,4 +53,18 @@ public class CheckoutTests
         //assert
         Assert.AreEqual(total, expectedTotal);
     }
+
+    [Test]
+    public void ScanInvalidItem_TotalShouldBeZero()
+    {
+        //arrange
+        var sut = GetCheckout();
+
+        //act
+        sut.ScanItem("InvalidSku");
+        var total = sut.GetTotalPrice();
+
+        //assert
+        Assert.AreEqual(0, total);
+    }
 }
