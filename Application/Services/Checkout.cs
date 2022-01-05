@@ -12,7 +12,7 @@ public class Checkout : ICheckout
 
     public decimal GetTotalPrice()
     {
-        throw new NotImplementedException();
+        return 0;
     }
 
     public void ScanItem(string sku)
