@@ -26,26 +26,18 @@ public class Checkout : ICheckout
 
         foreach (var product in _bag.Distinct())
         {
-            if (!QualifiesForDiscount(product))
+            var productCount = _bag.Count(x => x.Sku == product.Sku);
+
+            if (!product.QualifiesForDiscount(productCount))
                 continue;
 
-            total -= product.Offer!.CalculateDiscount(_bag.Count(x => x.Sku == product.Sku), product.UnitPrice);
+            total -= product.Offer!.CalculateDiscount(productCount, product.UnitPrice);
         }
 
         _runningTotal = total;
     }
 
     public double GetTotalPrice() => _runningTotal.Round();
-
-    private bool QualifiesForDiscount(Item product)
-    {
-        if (product.Offer is null)
-            return false;
-
-        var productCount = _bag.Count(x => x.Sku == product.Sku);
-
-        return productCount >= product.Offer.Quantity;
-    }
 
     public void ScanItem(string sku)
     {

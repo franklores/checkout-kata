@@ -8,5 +8,5 @@ public interface IOffer
 
     string Sku { get; }
 
-    double CalculateDiscount(int itemCount, double unitPrice) { return 0; }
+    double CalculateDiscount(int itemCount, double unitPrice) => 0;
 }
